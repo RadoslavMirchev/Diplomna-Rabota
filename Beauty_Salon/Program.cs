@@ -1,5 +1,4 @@
 using Beauty_Salon.Data;
-using Beauty_Salon.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,8 +12,15 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
-/*await ContextSeed.SeedRolesAsync(userManager, roleManager);
-await ContextSeed.SeedAdminAsync(userManager, roleManager);*/
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 8;
+    options.Password.RequiredUniqueChars = 0;
+});
 builder.Services.AddControllersWithViews();
 var app = builder.Build();
 

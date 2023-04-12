@@ -9,20 +9,20 @@ namespace Beauty_Salon.Data
 {
     public class ContextSeed
     {
-        public static async Task SeedRolesAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             //Seed Roles
             await roleManager.CreateAsync(new IdentityRole(Enums.Role.Admin.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Enums.Role.Worker.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Enums.Role.Client.ToString()));
         }
-        public static async Task SeedAdminAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedAdminAsync(UserManager<ApplicationUser> userManager)
         {
             //Seed Default User
             var defaultUser = new ApplicationUser
             {
                 UserName = "admin",
-                Email = "admin2@gmail.com",
+                Email = "admin88@gmail.com",
                 FirstName = "Radoslav",
                 LastName = "Mirchev",
                 MiddleName = "Konstantinov",
@@ -36,12 +36,14 @@ namespace Beauty_Salon.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "parola123");
-                    await userManager.AddToRoleAsync(defaultUser, Enums.Role.Client.ToString());
-                    await userManager.AddToRoleAsync(defaultUser, Enums.Role.Worker.ToString());
-                    await userManager.AddToRoleAsync(defaultUser, Enums.Role.Admin.ToString());
+                    var result = userManager.CreateAsync(defaultUser, "Aadmin88!").Result;
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(defaultUser, Enums.Role.Client.ToString());
+                        await userManager.AddToRoleAsync(defaultUser, Enums.Role.Worker.ToString());
+                        await userManager.AddToRoleAsync(defaultUser, Enums.Role.Admin.ToString());
+                    }
                 }
-
             }
         }
     }

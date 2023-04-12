@@ -15,22 +15,27 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Net.Mail;
+using System.Reflection.Metadata;
+using Beauty_Salon.Data;
 
 namespace Beauty_Salon.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-
+        private bool isRoleNotSeeded = true;
         public LoginModel(SignInManager<ApplicationUser> signInManager,
             ILogger<LoginModel> logger,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _signInManager = signInManager;
             _logger = logger;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
         public bool IsValidEmail(string emailaddress)
         {
@@ -68,6 +73,16 @@ namespace Beauty_Salon.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+
+            if (isRoleNotSeeded)
+            {
+                await ContextSeed.SeedRolesAsync(_roleManager);
+                await ContextSeed.SeedAdminAsync(_userManager);
+                isRoleNotSeeded = false;
+            }
+
+
+
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
