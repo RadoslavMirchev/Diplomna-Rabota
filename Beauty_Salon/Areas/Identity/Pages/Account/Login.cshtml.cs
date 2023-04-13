@@ -25,17 +25,19 @@ namespace Beauty_Salon.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ApplicationDbContext _context;
         private readonly ILogger<LoginModel> _logger;
-        private bool isRoleNotSeeded = true;
         public LoginModel(SignInManager<ApplicationUser> signInManager,
             ILogger<LoginModel> logger,
             UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            ApplicationDbContext context)
         {
             _signInManager = signInManager;
             _logger = logger;
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
         }
         public bool IsValidEmail(string emailaddress)
         {
@@ -74,11 +76,13 @@ namespace Beauty_Salon.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
 
-            if (isRoleNotSeeded)
+            if (_context.Roles.Count() == 0)
             {
                 await ContextSeed.SeedRolesAsync(_roleManager);
+            }
+            if (_context.Users.Count() == 0)
+            {
                 await ContextSeed.SeedAdminAsync(_userManager);
-                isRoleNotSeeded = false;
             }
 
 

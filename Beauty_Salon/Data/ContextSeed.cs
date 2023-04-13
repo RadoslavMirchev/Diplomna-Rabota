@@ -1,7 +1,10 @@
 ﻿using Beauty_Salon.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,10 +14,9 @@ namespace Beauty_Salon.Data
     {
         public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
-            //Seed Roles
-            await roleManager.CreateAsync(new IdentityRole(Enums.Role.Admin.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Enums.Role.Worker.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Enums.Role.Client.ToString()));
+                await roleManager.CreateAsync(new IdentityRole(Enums.Role.Admin.ToString()));
+                await roleManager.CreateAsync(new IdentityRole(Enums.Role.Worker.ToString()));
+                await roleManager.CreateAsync(new IdentityRole(Enums.Role.Client.ToString()));
         }
         public static async Task SeedAdminAsync(UserManager<ApplicationUser> userManager)
         {
@@ -22,10 +24,10 @@ namespace Beauty_Salon.Data
             var defaultUser = new ApplicationUser
             {
                 UserName = "admin",
-                Email = "admin88@gmail.com",
-                FirstName = "Radoslav",
-                LastName = "Mirchev",
-                MiddleName = "Konstantinov",
+                Email = "admin@gmail.com",
+                FirstName = "Радослав",
+                LastName = "Мирчев",
+                MiddleName = "Константинов",
                 PhoneNumber = "0896132783",
                 Age = 18,
                 EmailConfirmed = true,
@@ -36,7 +38,7 @@ namespace Beauty_Salon.Data
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    var result = userManager.CreateAsync(defaultUser, "Aadmin88!").Result;
+                    var result = userManager.CreateAsync(defaultUser, "admin0000").Result;
                     if (result.Succeeded)
                     {
                         await userManager.AddToRoleAsync(defaultUser, Enums.Role.Client.ToString());

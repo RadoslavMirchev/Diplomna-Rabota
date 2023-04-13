@@ -14,8 +14,6 @@ namespace Beauty_Salon.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.Seed();
         }
 
         public DbSet<Procedure> Procedures { get; set; }
