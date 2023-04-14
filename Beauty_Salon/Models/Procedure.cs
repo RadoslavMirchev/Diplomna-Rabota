@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Beauty_Salon.Models
 {
@@ -12,6 +13,12 @@ namespace Beauty_Salon.Models
         public double Price { get; set; }
         public int Duration { get; set; } = 30;
 
+        [ForeignKey("Worker")]
+        public string WorkerId { get; set; }
+        [Required]
+        public ApplicationUser? Worker { get; set; }
+        [Required, MaxLength(40)]
+        public string WorkerName { get; set; }
     }
 }
 

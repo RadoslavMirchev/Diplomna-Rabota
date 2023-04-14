@@ -9,14 +9,11 @@ namespace Beauty_Salon.Models
         public int Id { get; set; }
         [Required]
         public DateTime AppointmentTime { get; set; }
-        public int AppointmentDuration { get; set; }
-        public string LocationAddress = "ул. Славянска 32, гр.Куклен, обл. Пловдив";
+        public int AppointmentDuration { get; set; } = 30;
         [ForeignKey("Procedure")]
         public int ProcedureId { get; set; }
         public Procedure? Procedure { get; set; }
         [Required]
         public ApplicationUser Client { get; set; }
-        [Required]
-        public List<ApplicationUser> Workers { get; set; }
     }
 }

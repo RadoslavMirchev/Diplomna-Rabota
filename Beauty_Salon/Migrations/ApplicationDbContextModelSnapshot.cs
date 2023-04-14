@@ -4,23 +4,20 @@ using Beauty_Salon.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Beauty_Salon.Data.Migrations
+namespace Beauty_Salon.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230406095913_AppointmentsFixed")]
-    partial class AppointmentsFixed
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.4")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -42,10 +39,6 @@ namespace Beauty_Salon.Data.Migrations
                     b.Property<string>("ClientId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LocationAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProcedureId")
                         .HasColumnType("int");
@@ -78,7 +71,18 @@ namespace Beauty_Salon.Data.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
+                    b.Property<string>("WorkerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WorkerName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("WorkerId");
 
                     b.ToTable("Procedures");
                 });
@@ -300,9 +304,6 @@ namespace Beauty_Salon.Data.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AppointmentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -317,8 +318,6 @@ namespace Beauty_Salon.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
-
-                    b.HasIndex("AppointmentId");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
@@ -340,6 +339,17 @@ namespace Beauty_Salon.Data.Migrations
                     b.Navigation("Client");
 
                     b.Navigation("Procedure");
+                });
+
+            modelBuilder.Entity("Beauty_Salon.Models.Procedure", b =>
+                {
+                    b.HasOne("ApplicationUser", "Worker")
+                        .WithMany("Procedures")
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Worker");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -395,14 +405,7 @@ namespace Beauty_Salon.Data.Migrations
 
             modelBuilder.Entity("ApplicationUser", b =>
                 {
-                    b.HasOne("Beauty_Salon.Models.Appointment", null)
-                        .WithMany("Workers")
-                        .HasForeignKey("AppointmentId");
-                });
-
-            modelBuilder.Entity("Beauty_Salon.Models.Appointment", b =>
-                {
-                    b.Navigation("Workers");
+                    b.Navigation("Procedures");
                 });
 #pragma warning restore 612, 618
         }

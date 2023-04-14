@@ -19,16 +19,10 @@
                 @Html.DisplayNameFor(model => model.AppointmentDuration)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LocationAddress)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Procedure)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Client)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Workers)
             </th>
         </tr>
     </thead>
@@ -42,16 +36,10 @@
                     @Html.DisplayFor(modelItem => item.AppointmentDuration)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LocationAddress)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Procedure)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Client)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Workers)
                 </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

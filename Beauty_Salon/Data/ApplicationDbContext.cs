@@ -13,6 +13,9 @@ namespace Beauty_Salon.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Procedure>().HasOne(m => m.Worker).WithMany(m => m.Procedures).HasForeignKey(m => m.WorkerId).OnDelete(DeleteBehavior.NoAction);
+            //builder.Entity<ApplicationUser>().HasMany(m => m.Procedures).WithOne(m => m.Worker).HasForeignKey(m => m.WorkerId).IsRequired();
+            //builder.Entity<ApplicationUser>().HasIndex(u => u.FirstName).IsUnique();
             base.OnModelCreating(builder);
         }
 

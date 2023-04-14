@@ -1,5 +1,4 @@
 ﻿@model Beauty_Salon.Models.Procedure
-
 @{
     ViewData["Title"] = "Edit";
 }
@@ -22,6 +21,11 @@
                 <label asp-for="Price" class="control-label"></label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkerId" class="control-label">Worker</label>
+                <select asp-for="WorkerId" asp-items=@ViewBag.ApplicationUsers class="form-control"></select>
+                <span asp-validation-for="WorkerId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

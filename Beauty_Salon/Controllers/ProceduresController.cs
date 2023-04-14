@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Beauty_Salon.Data;
 using Beauty_Salon.Models;
+using Beauty_Salon.Migrations;
 
 namespace Beauty_Salon.Controllers
 {
@@ -48,6 +49,12 @@ namespace Beauty_Salon.Controllers
         // GET: Procedures/Create
         public IActionResult Create()
         {
+            ViewBag.ApplicationUsers = _context.ApplicationUsers
+                     .Select(selector: i => new SelectListItem
+                     {
+                         Value = i.Id.ToString(),
+                         Text = i.FirstName + " " + i.LastName,
+                     }).ToList();
             return View();
         }
 
@@ -56,8 +63,22 @@ namespace Beauty_Salon.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price")] Procedure procedure)
+        public async Task<IActionResult> Create([Bind("Id,Name,Price,WorkerId,WorkerName")] ProcedureViewModel procedureView)
         {
+            ViewBag.ApplicationUsers = _context.ApplicationUsers
+                     .Select(selector: i => new SelectListItem
+                     {
+                         Value = i.Id.ToString(),
+                         Text = i.FirstName + " " + i.LastName,
+                     }).ToList();
+            Procedure procedure = new Procedure
+            {
+                Id = procedureView.Id,
+                Name = procedureView.Name,
+                Price = procedureView.Price,
+                WorkerId = procedureView.WorkerId,
+                WorkerName = _context.ApplicationUsers.Find(procedureView.WorkerId).FirstName
+            };
             if (ModelState.IsValid)
             {
                 _context.Add(procedure);
@@ -88,9 +109,9 @@ namespace Beauty_Salon.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price")] Procedure procedure)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Worker")] ProcedureViewModel procedureView)
         {
-            if (id != procedure.Id)
+            if (id != procedureView.Id)
             {
                 return NotFound();
             }
@@ -99,12 +120,12 @@ namespace Beauty_Salon.Controllers
             {
                 try
                 {
-                    _context.Update(procedure);
+                    _context.Update(procedureView);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProcedureExists(procedure.Id))
+                    if (!ProcedureExists(procedureView.Id))
                     {
                         return NotFound();
                     }
@@ -115,7 +136,7 @@ namespace Beauty_Salon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(procedure);
+            return View(procedureView);
         }
 
         // GET: Procedures/Delete/5

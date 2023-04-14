@@ -73,7 +73,6 @@ namespace Beauty_Salon.Controllers
                      }).ToList();
             if (ModelState.IsValid)
             {
-
                 _context.Add(appointment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -173,5 +172,41 @@ namespace Beauty_Salon.Controllers
         {
           return (_context.Appointments?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        /*[HttpPost]
+        public ActionResult BookAppointment(BookAppointmentViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var appointmentDate = viewModel.AppointmentDate.Date;
+                var appointmentTime = viewModel.SelectedTimeSlot;
+
+                if (_context.IsSlotAvailable(appointmentDate, appointmentTime))
+                {
+                    var appointment = new Appointment
+                    {
+                        FirstName = viewModel.FirstName,
+                        LastName = viewModel.LastName,
+                        Email = viewModel.Email,
+                        AppointmentDate = appointmentDate,
+                        AppointmentTime = appointmentTime
+                    };
+
+                    _context.Appointments.Add(appointment);
+                    _context.SaveChanges();
+
+                    // Redirect to a success page or display a success message to the user
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "The selected time slot is not available. Please choose a different time.");
+                }
+            }
+
+            // If the model state is not valid, redisplay the form with validation errors
+            return View(viewModel);
+        }*/
     }
+
 }
