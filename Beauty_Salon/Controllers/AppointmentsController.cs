@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Beauty_Salon.Data;
 using Beauty_Salon.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Beauty_Salon.Controllers
 {
+    [Authorize(Roles = "Client")]
     public class AppointmentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -63,7 +65,7 @@ namespace Beauty_Salon.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AppointmentTime,ProcedureId")] Appointment appointment)
+        public async Task<IActionResult> Create([Bind("Id,AppointmentDate,AppointmentTime,HourAndMinute,ProcedureId,ProcedureName,WorkerName")] AppointmentViewModel appointmentView)
         {
             ViewBag.Procedures = _context.Procedures
                      .Select(selector: i => new SelectListItem
@@ -71,6 +73,17 @@ namespace Beauty_Salon.Controllers
                          Value = i.Id.ToString(),
                          Text = i.Name
                      }).ToList();
+            Appointment appointment = new Appointment
+            {
+                Id = appointmentView.Id,
+                AppointmentDate = appointmentView.AppointmentDate.Date,
+                AppointmentTime = appointmentView.AppointmentTime,
+                HourAndMinute = appointmentView.AppointmentTime.Hour + ":" + appointmentView.AppointmentTime.Minute,
+                ProcedureId = appointmentView.ProcedureId,
+                Procedure = _context.Procedures.Find(appointmentView.ProcedureId),
+                ProcedureName = _context.Procedures.Find(appointmentView.ProcedureId).Name,
+                WorkerName = _context.Procedures.Find(appointmentView.ProcedureId).WorkerName
+            };
             if (ModelState.IsValid)
             {
                 _context.Add(appointment);

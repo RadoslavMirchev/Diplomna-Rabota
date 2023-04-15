@@ -11,29 +11,32 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Client.FirstName)
+            @Html.DisplayNameFor(model => model.ProcedureName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Client.MiddleName)
+            @Html.DisplayFor(model => model.ProcedureName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Client.LastName)
-        </dt>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Procedure)
+            @Html.DisplayNameFor(model => model.Duration)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Procedure)
+            @Html.DisplayFor(model => model.Duration)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AppointmentTime)
+            @Html.DisplayNameFor(model => model.HourAndMinute)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AppointmentTime)
+            @Html.DisplayFor(model => model.HourAndMinute)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkerName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.WorkerName)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-custom" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a class="btn btn-custom" asp-action="Index">Cancel</a>
 </div>

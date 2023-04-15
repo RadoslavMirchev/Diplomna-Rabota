@@ -7,46 +7,42 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-custom" asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.AppointmentTime)
+                @Html.DisplayNameFor(model => model.ProcedureName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AppointmentDuration)
+                @Html.DisplayNameFor(model => model.HourAndMinute)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Procedure)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Client)
+                @Html.DisplayNameFor(model => model.WorkerName)
             </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AppointmentTime)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+
                 <td>
-                    @Html.DisplayFor(modelItem => item.AppointmentDuration)
+                    @Html.DisplayFor(modelItem => item.ProcedureName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Procedure)
+                    @Html.DisplayFor(modelItem => item.HourAndMinute)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Client)
+                    @Html.DisplayFor(modelItem => item.WorkerName)
                 </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+                <td>
+                    <a class="btn btn-custom" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a class="btn btn-custom" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a class="btn btn-custom" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

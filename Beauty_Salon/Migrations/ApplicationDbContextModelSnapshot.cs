@@ -30,26 +30,35 @@ namespace Beauty_Salon.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AppointmentDuration")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("AppointmentDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("AppointmentTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ClientId")
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<string>("HourAndMinute")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProcedureId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<string>("ProcedureName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("ClientId");
+                    b.Property<string>("WorkerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProcedureId");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("Beauty_Salon.Models.Procedure", b =>
@@ -84,7 +93,7 @@ namespace Beauty_Salon.Migrations
 
                     b.HasIndex("WorkerId");
 
-                    b.ToTable("Procedures");
+                    b.ToTable("Procedures", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -324,19 +333,11 @@ namespace Beauty_Salon.Migrations
 
             modelBuilder.Entity("Beauty_Salon.Models.Appointment", b =>
                 {
-                    b.HasOne("ApplicationUser", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Beauty_Salon.Models.Procedure", "Procedure")
                         .WithMany()
                         .HasForeignKey("ProcedureId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Client");
 
                     b.Navigation("Procedure");
                 });

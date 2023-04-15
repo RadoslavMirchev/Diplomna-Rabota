@@ -1,21 +1,85 @@
 ﻿@model Beauty_Salon.Models.Appointment
-
 @{
     ViewData["Title"] = "Create";
 }
-
-<h1>Create</h1>
-
-<h4>Appointment</h4>
+<script>
+    $(document).ready(function () {
+        $('.time-btn').click(function () {
+            $('.time-btn').prop('disabled', true); // disable all buttons
+            $(this).prop('disabled', false); // enable the clicked button
+        });
+    });
+</script>
+<h1>Create an appointment</h1>
 <hr />
+
+<div class="row">
+    <div class="col-md-4 text-center">
+        <h3>Choose a date for your appointment</h3>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="AppointmentTime" class="control-label"></label>
-                <input asp-for="AppointmentTime" class="form-control" />
-                <span asp-validation-for="AppointmentTime" class="text-danger"></span>
+                <label asp-for="AppointmentDate" class="control-label"></label>
+                <input asp-for="AppointmentDate" class="form-control" type="date"
+                       min="@DateTime.Now.ToString("yyyy-MM-dd")"
+                       max="@DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-6 offset-md-1 text-center">
+                    <h3>Choose an hour for your appointment</h3>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input asp-for="AppointmentTime" id="AppointmentTime" type="hidden" value="" />
+                        <span asp-validation-for="AppointmentTime" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                @for (int hour = 8; hour <= 11; hour++)
+                                {
+                                    <tr>
+                                        <td class="text-center"><button type="button" class="btn btn-custom appointment-time" onclick="setAppointmentTime('@hour:00')" name="AppointmentTime" value="@hour:00">@hour:00</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center"><button type="button" class="btn btn-custom appointment-time" onclick="setAppointmentTime('@hour:30')" name="AppointmentTime" value="@hour:30">@hour:30</button></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                @for (int hour = 12; hour <= 17; hour++)
+                                {
+                                    @if (hour == 13 || hour == 14)
+                                    {
+                                        continue; // skip hours 1 PM and 2 PM
+                                    }
+                                    <tr>
+                                        <td class="text-center"><button type="button" class="btn btn-custom appointment-time" onclick="setAppointmentTime('@hour:00')" name="AppointmentTime" value="@hour:00">@hour:00</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center"><button type="button" class="btn btn-custom appointment-time" onclick="setAppointmentTime('@hour:30')" name="AppointmentTime" value="@hour:30">@hour:30</button></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="ProcedureId" class="control-label">Procedure</label>
@@ -23,15 +87,26 @@
                 <span asp-validation-for="ProcedureId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-custom" />
             </div>
         </form>
     </div>
 </div>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-custom" asp-action="Index">Cancel</a>
 </div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $(".appointment-time").click(function () {
+                $(".appointment-time").attr("disabled", "disabled");
+                $(this).closest("tr").addClass("selected");
+                var appointmentTime = $(this).val();
+                $("input[name='AppointmentTime']").val(appointmentTime);
+            });
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

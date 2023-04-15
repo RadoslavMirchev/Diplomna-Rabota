@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Beauty_Salon.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230414210452_Test")]
-    partial class Test
+    [Migration("20230415193758_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,22 +33,31 @@ namespace Beauty_Salon.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AppointmentDuration")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("AppointmentDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("AppointmentTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ClientId")
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<string>("HourAndMinute")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProcedureId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<string>("ProcedureName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("ClientId");
+                    b.Property<string>("WorkerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProcedureId");
 
@@ -77,6 +86,11 @@ namespace Beauty_Salon.Migrations
                     b.Property<string>("WorkerId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WorkerName")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
 
@@ -322,19 +336,11 @@ namespace Beauty_Salon.Migrations
 
             modelBuilder.Entity("Beauty_Salon.Models.Appointment", b =>
                 {
-                    b.HasOne("ApplicationUser", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Beauty_Salon.Models.Procedure", "Procedure")
                         .WithMany()
                         .HasForeignKey("ProcedureId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Client");
 
                     b.Navigation("Procedure");
                 });

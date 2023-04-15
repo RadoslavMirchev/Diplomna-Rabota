@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Beauty_Salon.Migrations
 {
     /// <inheritdoc />
-    public partial class Test : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -170,7 +170,8 @@ namespace Beauty_Salon.Migrations
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Duration = table.Column<int>(type: "int", nullable: false),
-                    WorkerId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    WorkerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    WorkerName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -188,20 +189,17 @@ namespace Beauty_Salon.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AppointmentTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AppointmentDuration = table.Column<int>(type: "int", nullable: false),
+                    HourAndMinute = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Duration = table.Column<int>(type: "int", nullable: false),
                     ProcedureId = table.Column<int>(type: "int", nullable: false),
-                    ClientId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ProcedureName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WorkerName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Appointments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Appointments_AspNetUsers_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Appointments_Procedures_ProcedureId",
                         column: x => x.ProcedureId,
@@ -209,11 +207,6 @@ namespace Beauty_Salon.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Appointments_ClientId",
-                table: "Appointments",
-                column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_ProcedureId",

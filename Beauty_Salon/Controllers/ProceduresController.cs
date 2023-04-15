@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Beauty_Salon.Data;
 using Beauty_Salon.Models;
-using Beauty_Salon.Migrations;
 
 namespace Beauty_Salon.Controllers
 {

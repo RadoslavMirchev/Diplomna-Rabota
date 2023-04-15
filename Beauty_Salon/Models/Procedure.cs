@@ -11,7 +11,7 @@ namespace Beauty_Salon.Models
         public string Name { get; set; }
         [Required]
         public double Price { get; set; }
-        public int Duration { get; set; } = 30;
+        public int Duration { get; set; }
 
         [ForeignKey("Worker")]
         public string WorkerId { get; set; }

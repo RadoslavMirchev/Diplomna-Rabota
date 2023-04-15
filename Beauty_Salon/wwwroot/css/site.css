@@ -12,6 +12,29 @@ html {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
+.btn-custom {
+    color: plum;
+    background-color: none;
+    border-color: plum;
+    border-width: 2px;
+}
+div {
+    color: plum;
+}
+.btn-custom:hover {
+    color: floralwhite;
+    background-color: plum;
+    border-color: plum;
+    border-width: 2px;
+}
+.text-plum {
+    color:plum
+}
+
+table.table-bordered {
+    border-color: plum;
+}
+
 html {
   position: relative;
   min-height: 100%;
