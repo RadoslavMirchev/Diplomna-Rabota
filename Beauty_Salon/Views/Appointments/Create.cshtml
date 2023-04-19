@@ -2,14 +2,6 @@
 @{
     ViewData["Title"] = "Create";
 }
-<script>
-    $(document).ready(function () {
-        $('.time-btn').click(function () {
-            $('.time-btn').prop('disabled', true); // disable all buttons
-            $(this).prop('disabled', false); // enable the clicked button
-        });
-    });
-</script>
 <h1>Create an appointment</h1>
 <hr />
 
@@ -97,14 +89,21 @@
 </div>
 @section Scripts {
     <script>
-        $(document).ready(function () {
-            $(".appointment-time").click(function () {
-                $(".appointment-time").attr("disabled", "disabled");
-                $(this).closest("tr").addClass("selected");
-                var appointmentTime = $(this).val();
-                $("input[name='AppointmentTime']").val(appointmentTime);
-            });
-        });
+        function setAppointmentTime(time) {
+            // Get all buttons with class "appointment-time"
+            const buttons = document.querySelectorAll(".appointment-time");
+
+            // Remove the "active" class from all buttons
+            buttons.forEach((button) => button.classList.remove("selected"));
+
+            // Add the "active" class to the clicked button
+            const clickedButton = event.target;
+            clickedButton.classList.add("selected");
+
+            // Set the value of the hidden input field
+            const appointmentTimeField = document.getElementById("AppointmentTime");
+            appointmentTimeField.value = time;
+        }
     </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Beauty_Salon.Data;
 using Beauty_Salon.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Beauty_Salon.Controllers
 {
+    [AllowAnonymous] 
     public class ProceduresController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,9 +24,9 @@ namespace Beauty_Salon.Controllers
         // GET: Procedures
         public async Task<IActionResult> Index()
         {
-              return _context.Procedures != null ? 
-                          View(await _context.Procedures.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Procedures'  is null.");
+            return _context.Procedures != null ?
+                        View(await _context.Procedures.ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.Procedures'  is null.");
         }
 
         // GET: Procedures/Details/5
@@ -46,6 +48,7 @@ namespace Beauty_Salon.Controllers
         }
 
         // GET: Procedures/Create
+        [Authorize(Roles ="Worker,Admin")]
         public IActionResult Create()
         {
             ViewBag.ApplicationUsers = _context.ApplicationUsers
@@ -60,6 +63,7 @@ namespace Beauty_Salon.Controllers
         // POST: Procedures/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Worker,Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Price,WorkerId,WorkerName")] ProcedureViewModel procedureView)
@@ -86,7 +90,7 @@ namespace Beauty_Salon.Controllers
             }
             return View(procedure);
         }
-
+        [Authorize(Roles = "Worker,Admin")]
         // GET: Procedures/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -106,6 +110,7 @@ namespace Beauty_Salon.Controllers
         // POST: Procedures/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Worker,Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Worker")] ProcedureViewModel procedureView)
@@ -139,6 +144,7 @@ namespace Beauty_Salon.Controllers
         }
 
         // GET: Procedures/Delete/5
+        [Authorize(Roles = "Worker,Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Procedures == null)

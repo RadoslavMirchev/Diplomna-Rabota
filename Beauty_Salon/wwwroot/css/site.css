@@ -1,13 +1,14 @@
 html {
   font-size: 14px;
 }
-
+footer {
+    background-color:plum;
+}
 @media (min-width: 768px) {
   html {
     font-size: 16px;
   }
 }
-
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
@@ -18,18 +19,25 @@ html {
     border-color: plum;
     border-width: 2px;
 }
-div {
-    color: plum;
-}
 .btn-custom:hover {
     color: floralwhite;
     background-color: plum;
     border-color: plum;
     border-width: 2px;
 }
-.text-plum {
-    color:plum
+.selected {
+    color: floralwhite;
+    background-color: plum;
+    border-color: plum;
+    border-width: 2px;
 }
+
+div {
+    color: plum;
+}
+.bg-plum {
+    background-color:plum;
+} 
 
 table.table-bordered {
     border-color: plum;

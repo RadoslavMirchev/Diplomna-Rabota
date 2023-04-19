@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Beauty_Salon.Controllers
 {
-    [Authorize(Roles = "Client")]
+    [Authorize(Roles = "Client,Worker,Admin")]
     public class AppointmentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -31,6 +31,7 @@ namespace Beauty_Salon.Controllers
         }
 
         // GET: Appointments/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Appointments == null)
@@ -80,10 +81,14 @@ namespace Beauty_Salon.Controllers
                 AppointmentTime = appointmentView.AppointmentTime,
                 HourAndMinute = appointmentView.AppointmentTime.Hour + ":" + appointmentView.AppointmentTime.Minute,
                 ProcedureId = appointmentView.ProcedureId,
-                Procedure = _context.Procedures.Find(appointmentView.ProcedureId),
+                Procedure = _context.Procedures.FirstOrDefault(p => p.Id == appointmentView.ProcedureId),
                 ProcedureName = _context.Procedures.Find(appointmentView.ProcedureId).Name,
                 WorkerName = _context.Procedures.Find(appointmentView.ProcedureId).WorkerName
             };
+            if (appointment.AppointmentTime.Minute == 0)
+            {
+                appointment.HourAndMinute += "0";
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(appointment);
@@ -96,6 +101,12 @@ namespace Beauty_Salon.Controllers
         // GET: Appointments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewBag.Procedures = _context.Procedures
+                     .Select(selector: i => new SelectListItem
+                     {
+                         Value = i.Id.ToString(),
+                         Text = i.Name
+                     }).ToList();
             if (id == null || _context.Appointments == null)
             {
                 return NotFound();
@@ -114,8 +125,14 @@ namespace Beauty_Salon.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AppointmentTime,Procedure")] Appointment appointment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AppointmentTime,ProcedureId")] Appointment appointment)
         {
+            ViewBag.Procedures = _context.Procedures
+                     .Select(selector: i => new SelectListItem
+                     {
+                         Value = i.Id.ToString(),
+                         Text = i.Name
+                     }).ToList();
             if (id != appointment.Id)
             {
                 return NotFound();
@@ -185,41 +202,6 @@ namespace Beauty_Salon.Controllers
         {
           return (_context.Appointments?.Any(e => e.Id == id)).GetValueOrDefault();
         }
-
-        /*[HttpPost]
-        public ActionResult BookAppointment(BookAppointmentViewModel viewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var appointmentDate = viewModel.AppointmentDate.Date;
-                var appointmentTime = viewModel.SelectedTimeSlot;
-
-                if (_context.IsSlotAvailable(appointmentDate, appointmentTime))
-                {
-                    var appointment = new Appointment
-                    {
-                        FirstName = viewModel.FirstName,
-                        LastName = viewModel.LastName,
-                        Email = viewModel.Email,
-                        AppointmentDate = appointmentDate,
-                        AppointmentTime = appointmentTime
-                    };
-
-                    _context.Appointments.Add(appointment);
-                    _context.SaveChanges();
-
-                    // Redirect to a success page or display a success message to the user
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "The selected time slot is not available. Please choose a different time.");
-                }
-            }
-
-            // If the model state is not valid, redisplay the form with validation errors
-            return View(viewModel);
-        }*/
     }
 
 }

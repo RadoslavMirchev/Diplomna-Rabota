@@ -9,23 +9,80 @@
 <h4>Appointment</h4>
 <hr />
 <div class="row">
+    <div class="col-md-4 text-center">
+        <h3>Choose a date for your appointment</h3>
+    </div>
+</div>
+<div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="AppointmentTime" class="control-label"></label>
-                <input asp-for="AppointmentTime" class="form-control" />
-                <span asp-validation-for="AppointmentTime" class="text-danger"></span>
+                <label asp-for="AppointmentDate" class="control-label"></label>
+                <input asp-for="AppointmentDate" class="form-control" type="date"
+                       min="@DateTime.Now.ToString("yyyy-MM-dd")"
+                       max="@DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Procedure" class="control-label"></label>
-                <input asp-for="Procedure" class="form-control" />
-                <span asp-validation-for="Procedure" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-6 offset-md-1 text-center">
+                    <h3>Choose an hour for your appointment</h3>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input asp-for="AppointmentTime" id="AppointmentTime" type="hidden" value="" />
+                        <span asp-validation-for="AppointmentTime" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                @for (int hour = 8; hour <= 11; hour++)
+                                {
+                                    <tr>
+                                        <td class="text-center"><button type="button" class="btn btn-custom appointment-time select-button" onclick="setAppointmentTime('@hour:00')" name="AppointmentTime" value="@hour:00">@hour:00</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center"><button type="button" class="btn btn-custom appointment-time select-button" onclick="setAppointmentTime('@hour:30')" name="AppointmentTime" value="@hour:30">@hour:30</button></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                @for (int hour = 12; hour <= 17; hour++)
+                                {
+                                    @if (hour == 13 || hour == 14)
+                                    {
+                                        continue; // skip hours 1 PM and 2 PM
+                                    }
+                                    <tr>
+                                        <td class="text-center"><button type="button" class="btn btn-custom appointment-time select-button" onclick="setAppointmentTime('@hour:00')" name="AppointmentTime" value="@hour:00">@hour:00</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center"><button type="button" class="btn btn-custom appointment-time select-button" onclick="setAppointmentTime('@hour:30')" name="AppointmentTime" value="@hour:30">@hour:30</button></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <label asp-for="ProcedureId" class="control-label">Procedure</label>
+                <select asp-for="ProcedureId" asp-items=@ViewBag.Procedures class="form-control"></select>
+                <span asp-validation-for="ProcedureId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-custom" />
             </div>
         </form>
     </div>
@@ -36,5 +93,21 @@
 </div>
 
 @section Scripts {
+    <script>
+        const appointmentTimeButtons = document.querySelectorAll('.select-button');
+
+        // Add click event listener to each button
+        appointmentTimeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove 'selected' class from previously clicked button
+                appointmentTimeButtons.forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+
+                // Add 'selected' class to clicked button
+                button.classList.add('selected');
+            });
+        });
+    </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
