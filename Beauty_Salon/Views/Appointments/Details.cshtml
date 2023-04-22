@@ -4,32 +4,34 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
+<h1 class="text-center">Допълнителна информация за час</h1>
+<br />
+<br />
+<h3>Час</h3>
 <div>
-    <h4>Appointment</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProcedureName)
+            Име
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ProcedureName)
         </dd>
+
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Duration)
+            Час
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Duration)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HourAndMinute)
-        </dt>
-        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.HourAndMinute)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkerName)
+            Продължителност
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Duration) минути
+        </dd>
+        <dt class="col-sm-2">
+            Работник
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.WorkerName)
@@ -37,6 +39,6 @@
     </dl>
 </div>
 <div>
-    <a class="btn btn-custom" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a class="btn btn-custom" asp-action="Index">Cancel</a>
+    <a class="btn btn-custom" asp-action="Edit" asp-route-id="@Model?.Id">Промени</a> |
+    <a class="btn btn-custom" asp-action="Index">Назад</a>
 </div>

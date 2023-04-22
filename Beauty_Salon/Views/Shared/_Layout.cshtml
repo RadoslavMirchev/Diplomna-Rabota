@@ -7,12 +7,13 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Beauty_Salon.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-plum border-bottom box-shadow mb-3 navbar-plum">
             <div class="container-fluid">
-                <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index">Beauty Salon</a>
+                <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/Beauty_Salon.jpg" width="60" height="30" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,21 +21,21 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-light btn-custom" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Начало</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Appointments" asp-action="Index">Часове</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Appointments" asp-action="Index">Make an Appointment</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Procedures" asp-action="Index">Процедури</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Procedures" asp-action="Index">Procedure</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Поверителност</a>
                         </li>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="UserRoles" asp-action="Index">Users</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="UserRoles" asp-action="Index">Потребители</a>
                             </li>
                         }
                         
@@ -52,12 +53,13 @@
 
     <footer class="border-top footer text-muted">
         <div class="container text-light">
-            &copy; 2023 - Beauty Salon - Telephone: 0895413283, 0886137249 - You can find us at: Ул. "Славянска" №32, град Куклен., област Пловдив
+            &copy; 2023 - Салон за красота - Telephone: 0895413283, 0886137249 - You can find us at: Ул. "Славянска" №32, град Куклен., област Пловдив
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

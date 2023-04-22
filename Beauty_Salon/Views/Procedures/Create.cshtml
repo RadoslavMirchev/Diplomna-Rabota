@@ -4,38 +4,33 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Procedure</h4>
+<h1 class="text-center">Нова процедура</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Име</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
+                <label asp-for="Price" class="control-label">Цена</label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="WorkerId" class="control-label">Worker</label>
+                <label asp-for="WorkerId" class="control-label">Работник</label>
                 <select asp-for="WorkerId" asp-items=@ViewBag.ApplicationUsers class="form-control"></select>
                 <span asp-validation-for="WorkerId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Създай" class="btn btn-custom" />
+                <a class="btn btn-custom" asp-action="Index">Назад</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a class="btn btn-custom" asp-action="Index">Cancel</a>
 </div>
 
 @section Scripts {

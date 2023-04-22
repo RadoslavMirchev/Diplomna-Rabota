@@ -4,18 +4,18 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="text-center">Часове</h1>
 <p>
-    <a class="btn btn-custom" asp-action="Create">Create New</a>
+    <a class="btn btn-custom" asp-action="Create">Запази нов час</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ProcedureName)
+                Име
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HourAndMinute)
+                Час
             </th>
             <th></th>
         </tr>
@@ -32,9 +32,10 @@
                     @Html.DisplayFor(modelItem => item.HourAndMinute)
                 </td>
                 <td>
-                    <a class="btn btn-custom" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a class="btn btn-custom" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a class="btn btn-custom" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+
+                    <a class="btn btn-custom" asp-action="Details" asp-route-id="@item.Id">Още информация</a> |
+                    <a class="btn btn-custom" asp-action="Edit" asp-route-id="@item.Id">Промени</a> |
+                    <a class="btn btn-custom" asp-action="Delete" asp-route-id="@item.Id">Премахни</a>
                 </td>
             </tr>
         }

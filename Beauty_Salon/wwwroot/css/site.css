@@ -31,7 +31,13 @@ footer {
     border-color: plum;
     border-width: 2px;
 }
-
+.center {
+    text-align:center;
+}
+.active {
+    color:white !important;
+    background-color:plum !important;
+}
 div {
     color: plum;
 }

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Beauty_Salon.Data;
 using Beauty_Salon.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Beauty_Salon.Controllers
 {
@@ -15,10 +16,12 @@ namespace Beauty_Salon.Controllers
     public class AppointmentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AppointmentsController(ApplicationDbContext context)
+        public AppointmentsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
             _context.Appointments.Include(a => a.Procedure).ToList();
         }
 

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "WKAgvYJnBJvNVIR1gCZCDf9PhKcNaV0mKnHJNew6Lw8=",
+  "Hash": "CZBjdRC8kSmgadBQMwUZndG588ooRFzMtG/b0NqLczs=",
   "Source": "Beauty_Salon",
   "BasePath": "_content/Beauty_Salon",
   "Mode": "Default",
@@ -1120,6 +1120,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\Beautician.jpg"
+    },
+    {
+      "Identity": "D:\\The Dweller's Dungeon\\School Things (boring)\\Final Stretch\\Beauty_Salon_repo\\Diplomna-Rabota\\Beauty_Salon\\wwwroot\\images\\Beauty_Salon.jpg",
+      "SourceId": "Beauty_Salon",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\The Dweller's Dungeon\\School Things (boring)\\Final Stretch\\Beauty_Salon_repo\\Diplomna-Rabota\\Beauty_Salon\\wwwroot\\",
+      "BasePath": "_content/Beauty_Salon",
+      "RelativePath": "images/Beauty_Salon.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Beauty_Salon.jpg"
     },
     {
       "Identity": "D:\\The Dweller's Dungeon\\School Things (boring)\\Final Stretch\\Beauty_Salon_repo\\Diplomna-Rabota\\Beauty_Salon\\wwwroot\\images\\Cosmotologist.jpg",

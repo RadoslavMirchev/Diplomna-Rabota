@@ -8,16 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using Beauty_Salon.Data;
 using Beauty_Salon.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Beauty_Salon.Controllers
 {
-    [AllowAnonymous] 
+    [AllowAnonymous]
     public class ProceduresController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProceduresController(ApplicationDbContext context)
+        public ProceduresController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
 
@@ -48,10 +51,18 @@ namespace Beauty_Salon.Controllers
         }
 
         // GET: Procedures/Create
-        [Authorize(Roles ="Worker,Admin")]
-        public IActionResult Create()
+        [Authorize(Roles = "Worker,Admin")]
+        public async Task<IActionResult> Create()
         {
-            ViewBag.ApplicationUsers = _context.ApplicationUsers
+            var workers = new List<ApplicationUser>();
+            foreach (var user in _context.ApplicationUsers)
+            {
+                if (await _userManager.IsInRoleAsync(user, "Worker"))
+                {
+                    workers.Add(user);
+                }
+            }
+            ViewBag.ApplicationUsers = workers
                      .Select(selector: i => new SelectListItem
                      {
                          Value = i.Id.ToString(),
@@ -68,7 +79,16 @@ namespace Beauty_Salon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Price,WorkerId,WorkerName")] ProcedureViewModel procedureView)
         {
-            ViewBag.ApplicationUsers = _context.ApplicationUsers
+
+            var workers = new List<ApplicationUser>();
+            foreach (var user in _context.ApplicationUsers)
+            {
+                if (await _userManager.IsInRoleAsync(user, "Worker"))
+                {
+                    workers.Add(user);
+                }
+            }
+            ViewBag.ApplicationUsers = workers
                      .Select(selector: i => new SelectListItem
                      {
                          Value = i.Id.ToString(),
@@ -80,6 +100,7 @@ namespace Beauty_Salon.Controllers
                 Name = procedureView.Name,
                 Price = procedureView.Price,
                 WorkerId = procedureView.WorkerId,
+                Worker = _context.ApplicationUsers.FirstOrDefault(x => x.Id == procedureView.WorkerId),
                 WorkerName = _context.ApplicationUsers.Find(procedureView.WorkerId).FirstName
             };
             if (ModelState.IsValid)
@@ -94,6 +115,21 @@ namespace Beauty_Salon.Controllers
         // GET: Procedures/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
+            var workers = new List<ApplicationUser>();
+            foreach (var user in _context.ApplicationUsers)
+            {
+                if (await _userManager.IsInRoleAsync(user, "Worker"))
+                {
+                    workers.Add(user);
+                }
+            }
+            ViewBag.ApplicationUsers = workers
+                     .Select(selector: i => new SelectListItem
+                     {
+                         Value = i.Id.ToString(),
+                         Text = i.FirstName + " " + i.LastName,
+                     }).ToList();
             if (id == null || _context.Procedures == null)
             {
                 return NotFound();
@@ -113,23 +149,46 @@ namespace Beauty_Salon.Controllers
         [Authorize(Roles = "Worker,Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Worker")] ProcedureViewModel procedureView)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,WorkerId,WorkerName")] ProcedureViewModel procedureView)
         {
+
+            var workers = new List<ApplicationUser>();
+            foreach (var user in _context.ApplicationUsers)
+            {
+                if (await _userManager.IsInRoleAsync(user, "Worker"))
+                {
+                    workers.Add(user);
+                }
+            }
+            ViewBag.ApplicationUsers = workers
+                     .Select(selector: i => new SelectListItem
+                     {
+                         Value = i.Id.ToString(),
+                         Text = i.FirstName + " " + i.LastName,
+                     }).ToList();
             if (id != procedureView.Id)
             {
                 return NotFound();
             }
-
+            Procedure procedure = new Procedure
+            {
+                Id = procedureView.Id,
+                Name = procedureView.Name,
+                Price = procedureView.Price,
+                WorkerId = procedureView.WorkerId,
+                Worker = _context.ApplicationUsers.FirstOrDefault(x => x.Id == procedureView.WorkerId),
+                WorkerName = _context.ApplicationUsers.Find(procedureView.WorkerId).FirstName
+            };
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(procedureView);
+                    _context.Update(procedure);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProcedureExists(procedureView.Id))
+                    if (!ProcedureExists(procedure.Id))
                     {
                         return NotFound();
                     }
@@ -176,14 +235,14 @@ namespace Beauty_Salon.Controllers
             {
                 _context.Procedures.Remove(procedure);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProcedureExists(int id)
         {
-          return (_context.Procedures?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Procedures?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

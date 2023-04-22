@@ -9,13 +9,12 @@ namespace Beauty_Salon.Models
         public int Id { get; set; }
         [Required, MaxLength(30)]
         public string Name { get; set; }
-        [Required]
+        [Required, Range(1, 1000)]
         public double Price { get; set; }
         public int Duration { get; set; } = 30;
 
         [ForeignKey("Worker")]
         public string WorkerId { get; set; }
-        [Required]
         public ApplicationUser? Worker { get; set; }
         [Required, MaxLength(40)]
         public string WorkerName { get; set; }

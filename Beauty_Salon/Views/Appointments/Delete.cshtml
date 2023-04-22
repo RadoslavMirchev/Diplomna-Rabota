@@ -4,30 +4,30 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete this?</h3>
+<h1 class="text-center">Премахване на часа</h1>
+<br />
+<br />
+<h3>Час</h3>
 <div>
-    <h4>Appointment</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AppointmentTime)
+            Име
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AppointmentTime)
+            @Html.DisplayFor(model => model.ProcedureName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Procedure)
+            Час
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Procedure)
+            @Html.DisplayFor(model => model.HourAndMinute)
         </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a class="btn btn-custom" asp-action="Index">Cancel</a>
+        <input type="submit" value="Премахни" class="btn btn-custom" /> |
+        <a class="btn btn-custom" asp-action="Index">Назад</a>
     </form>
 </div>
