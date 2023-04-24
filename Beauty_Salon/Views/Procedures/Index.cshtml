@@ -6,7 +6,7 @@
 
 <h1 class="text-center">Процедури</h1>
 
-@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+@if (User.IsInRole("Admin") || User.IsInRole("Worker"))
 {
     <p>
         <a class="btn btn-custom" asp-action="Create">Добави процедура</a>
@@ -43,7 +43,7 @@
                     </td>
                 }
                 
-                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                @if (User.IsInRole("Admin") || User.IsInRole("Worker"))
                 {
                     <td>
                         <a class="btn btn-custom" asp-action="Details" asp-route-id="@item.Id">Още информация</a> |

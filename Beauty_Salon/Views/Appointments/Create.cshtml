@@ -20,7 +20,7 @@
                     <label asp-for="AppointmentDate" class="control-label">Дата за часа</label>
                     <input asp-for="AppointmentDate" class="form-control" type="date"
                            min="@DateTime.Now.ToString("yyyy-MM-dd")"
-                           max="@DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd")" />
+                           max="@DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd")" onselect="setAppointmentTime(@DateTime.Now)" />
                     <span asp-validation-for="AppointmentDate" class="text-danger"></span>
                 </div>
 

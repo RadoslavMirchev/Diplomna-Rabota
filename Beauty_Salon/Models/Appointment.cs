@@ -16,9 +16,8 @@ namespace Beauty_Salon.Models
         [ForeignKey("Procedure")]
         public int ProcedureId { get; set; }
         public Procedure? Procedure { get; set; }
-        [Required]
-        public string ProcedureName { get; set; }
-        [Required]
-        public string WorkerName { get; set; }
+        [ForeignKey("Client")]
+        public string ClientId { get; set; }
+        public ApplicationUser? Client { get; set; }
     }
 }

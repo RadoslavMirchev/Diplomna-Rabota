@@ -82,7 +82,7 @@ namespace Beauty_Salon.Areas.Identity.Pages.Account
             }
             if (_context.Users.Count() == 0)
             {
-                await ContextSeed.SeedAdminAsync(_userManager);
+                await ContextSeed.SeedUsersAsync(_userManager);
             }
 
 

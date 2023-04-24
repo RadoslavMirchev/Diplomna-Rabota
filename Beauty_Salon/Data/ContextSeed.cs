@@ -18,9 +18,9 @@ namespace Beauty_Salon.Data
                 await roleManager.CreateAsync(new IdentityRole(Enums.Role.Worker.ToString()));
                 await roleManager.CreateAsync(new IdentityRole(Enums.Role.Client.ToString()));
         }
-        public static async Task SeedAdminAsync(UserManager<ApplicationUser> userManager)
+        public static async Task SeedUsersAsync(UserManager<ApplicationUser> userManager)
         {
-            //Seed Admin User
+            //Seed Users
             var adminUser = new ApplicationUser
             {
                 UserName = "admin",

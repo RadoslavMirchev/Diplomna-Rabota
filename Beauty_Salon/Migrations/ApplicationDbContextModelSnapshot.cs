@@ -36,6 +36,10 @@ namespace Beauty_Salon.Migrations
                     b.Property<DateTime>("AppointmentTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
@@ -46,19 +50,13 @@ namespace Beauty_Salon.Migrations
                     b.Property<int>("ProcedureId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ProcedureName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WorkerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
 
                     b.HasIndex("ProcedureId");
 
-                    b.ToTable("Appointments", (string)null);
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("Beauty_Salon.Models.Procedure", b =>
@@ -84,16 +82,11 @@ namespace Beauty_Salon.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("WorkerName")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("WorkerId");
 
-                    b.ToTable("Procedures", (string)null);
+                    b.ToTable("Procedures");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -333,11 +326,19 @@ namespace Beauty_Salon.Migrations
 
             modelBuilder.Entity("Beauty_Salon.Models.Appointment", b =>
                 {
+                    b.HasOne("ApplicationUser", "Client")
+                        .WithMany("Appointments")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Beauty_Salon.Models.Procedure", "Procedure")
                         .WithMany()
                         .HasForeignKey("ProcedureId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Client");
 
                     b.Navigation("Procedure");
                 });
@@ -406,6 +407,8 @@ namespace Beauty_Salon.Migrations
 
             modelBuilder.Entity("ApplicationUser", b =>
                 {
+                    b.Navigation("Appointments");
+
                     b.Navigation("Procedures");
                 });
 #pragma warning restore 612, 618

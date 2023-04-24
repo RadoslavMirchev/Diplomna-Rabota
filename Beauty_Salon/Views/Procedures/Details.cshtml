@@ -11,33 +11,43 @@
 <div>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Име
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Цена
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price) лева
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Продължителност
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Duration) минути
         </dd>
         <dt class="col-sm-2">
             Работник
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.WorkerName)
+            @Html.DisplayFor(model => model.Worker.FirstName)
         </dd>
     </dl>
 </div>
-<div>
-    <a class="btn btn-custom" asp-action="Edit" asp-route-id="@Model?.Id">Промени</a> |
-    <a class="btn btn-custom" asp-action="Index">Назад</a>
-</div>
+@if (!User.Identity.IsAuthenticated || User.IsInRole("Client"))
+{
+    <div>
+        <a class="btn btn-custom" asp-action="Index">Назад</a>
+    </div>
+}
+@if (User.IsInRole("Admin") || User.IsInRole("Worker"))
+{
+    <div>
+        <a class="btn btn-custom" asp-action="Edit" asp-route-id="@Model?.Id">Промени</a> |
+        <a class="btn btn-custom" asp-action="Index">Назад</a>
+    </div>
+}
+

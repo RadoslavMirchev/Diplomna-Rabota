@@ -16,5 +16,6 @@ public class ApplicationUser : IdentityUser
     public string MiddleName { get; set; }
     [Required, Range(5, 120, ErrorMessage = "Please input a valid age.")]
     public int Age { get; set; }
+    public List<Appointment>? Appointments { get; set; }
     public List<Procedure> Procedures { get; set; }
 }

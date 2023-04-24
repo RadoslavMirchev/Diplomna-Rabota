@@ -40,7 +40,7 @@ namespace Beauty_Salon.Controllers
                 return NotFound();
             }
 
-            var procedure = await _context.Procedures
+            var procedure = await _context.Procedures.Include(p => p.Worker)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (procedure == null)
             {
@@ -100,8 +100,6 @@ namespace Beauty_Salon.Controllers
                 Name = procedureView.Name,
                 Price = procedureView.Price,
                 WorkerId = procedureView.WorkerId,
-                Worker = _context.ApplicationUsers.FirstOrDefault(x => x.Id == procedureView.WorkerId),
-                WorkerName = _context.ApplicationUsers.Find(procedureView.WorkerId).FirstName
             };
             if (ModelState.IsValid)
             {
@@ -176,8 +174,6 @@ namespace Beauty_Salon.Controllers
                 Name = procedureView.Name,
                 Price = procedureView.Price,
                 WorkerId = procedureView.WorkerId,
-                Worker = _context.ApplicationUsers.FirstOrDefault(x => x.Id == procedureView.WorkerId),
-                WorkerName = _context.ApplicationUsers.Find(procedureView.WorkerId).FirstName
             };
             if (ModelState.IsValid)
             {

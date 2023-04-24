@@ -23,14 +23,15 @@ namespace Beauty_Salon.Controllers
             _context = context;
             _userManager = userManager;
             _context.Appointments.Include(a => a.Procedure).ToList();
+            _context.Procedures.Include(p => p.Worker).ToList();
         }
 
         // GET: Appointments
         public async Task<IActionResult> Index()
         {
-              return _context.Appointments != null ? 
-                          View(await _context.Appointments.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Appointments'  is null.");
+
+            var appointments = _context.Appointments.Where(x => x.Client.UserName == User.Identity.Name).ToList();
+            return View(appointments);
         }
 
         // GET: Appointments/Details/5
@@ -61,6 +62,7 @@ namespace Beauty_Salon.Controllers
                          Value = i.Id.ToString(),
                          Text = i.Name
                      }).ToList();
+
             return View();
         }
 
@@ -69,8 +71,9 @@ namespace Beauty_Salon.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AppointmentDate,AppointmentTime,HourAndMinute,ProcedureId,ProcedureName,WorkerName")] AppointmentViewModel appointmentView)
+        public async Task<IActionResult> Create([Bind("Id,AppointmentDate,AppointmentTime,HourAndMinute,ProcedureId,ProcedureName,WorkerName,ClientId")] AppointmentViewModel appointmentView)
         {
+
             ViewBag.Procedures = _context.Procedures
                      .Select(selector: i => new SelectListItem
                      {
@@ -84,13 +87,20 @@ namespace Beauty_Salon.Controllers
                 AppointmentTime = appointmentView.AppointmentTime,
                 HourAndMinute = appointmentView.AppointmentTime.Hour + ":" + appointmentView.AppointmentTime.Minute,
                 ProcedureId = appointmentView.ProcedureId,
-                Procedure = _context.Procedures.FirstOrDefault(p => p.Id == appointmentView.ProcedureId),
-                ProcedureName = _context.Procedures.Find(appointmentView.ProcedureId).Name,
-                WorkerName = _context.Procedures.Find(appointmentView.ProcedureId).WorkerName
-            };
+                Client = await _userManager.FindByNameAsync(User.Identity.Name)
+        };
             if (appointment.AppointmentTime.Minute == 0)
             {
                 appointment.HourAndMinute += "0";
+            }
+            var appointments = await _context.Appointments.ToListAsync();
+            foreach (var thing in appointments)
+            {
+                if (thing.AppointmentDate == appointment.AppointmentDate && thing.HourAndMinute == appointment.HourAndMinute)
+                {
+                    ModelState.AddModelError("AppointmentTime", "This Appointment time is already taken.");
+                    return View(appointment);
+                }
             }
             if (ModelState.IsValid)
             {
@@ -128,19 +138,42 @@ namespace Beauty_Salon.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AppointmentTime,ProcedureId")] Appointment appointment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AppointmentDate,AppointmentTime,HourAndMinute,Duration,ProcedureId,")] AppointmentViewModel appointmentView)
         {
+            appointmentView.HourAndMinute = appointmentView.AppointmentTime.Hour + ":" + appointmentView.AppointmentTime.Minute;
             ViewBag.Procedures = _context.Procedures
                      .Select(selector: i => new SelectListItem
                      {
                          Value = i.Id.ToString(),
                          Text = i.Name
                      }).ToList();
+
+            var appointments = await _context.Appointments.ToListAsync();
+            foreach (var _appointment in appointments)
+            {
+                if (_appointment.AppointmentDate == appointmentView.AppointmentDate && _appointment.HourAndMinute == appointmentView.HourAndMinute)
+                {
+                    ModelState.AddModelError("AppointmentTime", "This Appointment time is already taken.");
+                    return View(appointmentView);
+                }
+            }
+            Appointment appointment = await _context.Appointments.FirstOrDefaultAsync(x => x.Id == id);
+
+            appointment.AppointmentDate = appointmentView.AppointmentDate.Date;
+            appointment.AppointmentTime = appointmentView.AppointmentTime;
+            appointment.HourAndMinute = appointmentView.AppointmentTime.Hour + ":" + appointmentView.AppointmentTime.Minute;
+            appointment.ProcedureId = appointmentView.ProcedureId;
+
+
+            if (appointment.AppointmentTime.Minute == 0)
+            {
+                appointment.HourAndMinute += "0";
+            }
             if (id != appointment.Id)
             {
                 return NotFound();
             }
-
+            
             if (ModelState.IsValid)
             {
                 try
@@ -196,14 +229,14 @@ namespace Beauty_Salon.Controllers
             {
                 _context.Appointments.Remove(appointment);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool AppointmentExists(int id)
         {
-          return (_context.Appointments?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Appointments?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 

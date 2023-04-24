@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "JA7THL7NdFvAypX7r4NEzcP91azMndPK9exqhwkQF5m9z9K8ujjckPELPSwW48rdd1NsfwPxNyg701O2RZuEEg==",
+  "dgSpecHash": "S3wAEx/IUA2vp7EFgsEDRfrLTTsARfyLMaQPqGzenJiVkBahGrc2kDZb8yj9Djpkq0MjVnderhzWKWodsz2aHA==",
   "success": true,
   "projectFilePath": "D:\\The Dweller's Dungeon\\School Things (boring)\\Final Stretch\\Beauty_Salon_repo\\Diplomna-Rabota\\Beauty_Salon\\Beauty_Salon.csproj",
   "expectedPackageFiles": [
@@ -47,6 +47,7 @@
     "C:\\Users\\r_mir\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\7.0.5\\microsoft.entityframeworkcore.tools.7.0.5.nupkg.sha512",
     "C:\\Users\\r_mir\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\7.0.0\\microsoft.extensions.caching.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\r_mir\\.nuget\\packages\\microsoft.extensions.caching.memory\\7.0.0\\microsoft.extensions.caching.memory.7.0.0.nupkg.sha512",
+    "C:\\Users\\r_mir\\.nuget\\packages\\microsoft.extensions.configuration\\7.0.0\\microsoft.extensions.configuration.7.0.0.nupkg.sha512",
     "C:\\Users\\r_mir\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\7.0.0\\microsoft.extensions.configuration.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\r_mir\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\7.0.0\\microsoft.extensions.dependencyinjection.7.0.0.nupkg.sha512",
     "C:\\Users\\r_mir\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0\\microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512",

@@ -15,9 +15,13 @@
                 Име
             </th>
             <th>
+                Дата
+            </th>
+            <th>
                 Час
             </th>
-            <th></th>
+            <th>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -26,13 +30,15 @@
             <tr>
 
                 <td>
-                    @Html.DisplayFor(modelItem => item.ProcedureName)
+                    @Html.DisplayFor(modelItem => item.Procedure.Name)
+                </td>
+                <td>
+                    @item.AppointmentDate.ToString("dd/MM/yyyy")
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.HourAndMinute)
                 </td>
                 <td>
-
                     <a class="btn btn-custom" asp-action="Details" asp-route-id="@item.Id">Още информация</a> |
                     <a class="btn btn-custom" asp-action="Edit" asp-route-id="@item.Id">Промени</a> |
                     <a class="btn btn-custom" asp-action="Delete" asp-route-id="@item.Id">Премахни</a>

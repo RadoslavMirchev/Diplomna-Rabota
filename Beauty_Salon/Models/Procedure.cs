@@ -16,8 +16,6 @@ namespace Beauty_Salon.Models
         [ForeignKey("Worker")]
         public string WorkerId { get; set; }
         public ApplicationUser? Worker { get; set; }
-        [Required, MaxLength(40)]
-        public string WorkerName { get; set; }
     }
 }
 

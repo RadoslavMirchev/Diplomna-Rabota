@@ -15,9 +15,15 @@
             Име
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ProcedureName)
+            @Html.DisplayFor(model => model.Procedure.Name)
         </dd>
 
+        <dt class="col-sm-2">
+            Дата
+        </dt>
+        <dd class="col-sm-10">
+            @Model.AppointmentDate.ToString("dd/MM/yyyy")
+        </dd>
         <dt class="col-sm-2">
             Час
         </dt>
@@ -34,7 +40,7 @@
             Работник
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.WorkerName)
+            @Html.DisplayFor(model => model.Procedure.Worker.FirstName)
         </dd>
     </dl>
 </div>
