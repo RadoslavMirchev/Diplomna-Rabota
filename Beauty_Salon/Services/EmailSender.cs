@@ -15,48 +15,19 @@ namespace Beauty_Salon.Services
 {
     public class EmailSender : IEmailSender
     {
-        private readonly IConfiguration _configuration;
-
-        public EmailSender(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
 
         public async Task SendEmailAsync(string email, string subject, string message)
         {
-            var smtpServer = _configuration["EmailSettings:SmtpServer"];
-            var smtpPort = _configuration["EmailSettings:SmtpPort"];
-            var smtpUsername = _configuration["EmailSettings:SmtpUsername"];
-            var smtpPassword = _configuration["EmailSettings:SmtpPassword"];
-
-            var sendemail = new MailMessage(smtpUsername, email, subject, message);
-
-            using (var client = new SmtpClient(smtpServer, int.Parse(smtpPort))
+            SmtpClient client = new SmtpClient
             {
+                Port = 587,
+                Host = "smtp.gmail.com",
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(smtpUsername, smtpPassword)
-            })
-            {
-                await client.SendMailAsync(sendemail);
-            }
-        }
-        /*public async Task SendConfirmationEmailAsync(string email, string subject, string message, string code)
-        {
-            var smtpServer = _configuration["EmailSettings:SmtpServer"];
-            var smtpPort = _configuration["EmailSettings:SmtpPort"];
-            var smtpUsername = _configuration["EmailSettings:SmtpUsername"];
-            var smtpPassword = _configuration["EmailSettings:SmtpPassword"];
-
-            var thing = new MailMessage(smtpUsername, email, subject, message);
-
-            var client = new SmtpClient(smtpServer, int.Parse(smtpPort))
-            {
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(smtpUsername, smtpPassword)
+                Credentials = new NetworkCredential("beautysalon934@gmail.com", "bbygcaihmzutkrjk")
             };
-            {
-                await client.SendMailAsync(thing);
-            }
-        }   */
+            await client.SendMailAsync("beautysalon934@gmail.com", email, subject, message);
+        }
     }
 }

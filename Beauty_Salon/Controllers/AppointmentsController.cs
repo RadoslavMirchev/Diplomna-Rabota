@@ -9,6 +9,8 @@ using Beauty_Salon.Data;
 using Beauty_Salon.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Beauty_Salon.Services;
+using System.Text.Encodings.Web;
 
 namespace Beauty_Salon.Controllers
 {
@@ -17,13 +19,16 @@ namespace Beauty_Salon.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly EmailSender _emailSender;
 
-        public AppointmentsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public AppointmentsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, EmailSender emailSender)
         {
             _context = context;
             _userManager = userManager;
+            _emailSender = emailSender;
             _context.Appointments.Include(a => a.Procedure).ToList();
             _context.Procedures.Include(p => p.Worker).ToList();
+            _context.Appointments.Include(a => a.Client).ToList();
         }
 
         // GET: Appointments
@@ -35,7 +40,6 @@ namespace Beauty_Salon.Controllers
         }
 
         // GET: Appointments/Details/5
-        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Appointments == null)
@@ -71,7 +75,7 @@ namespace Beauty_Salon.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AppointmentDate,AppointmentTime,HourAndMinute,ProcedureId,ProcedureName,WorkerName,ClientId")] AppointmentViewModel appointmentView)
+        public async Task<IActionResult> Create([Bind("Id,AppointmentDate,AppointmentTime,HourAndMinute,ProcedureId,ClientId")] AppointmentViewModel appointmentView)
         {
 
             ViewBag.Procedures = _context.Procedures
@@ -106,6 +110,9 @@ namespace Beauty_Salon.Controllers
             {
                 _context.Add(appointment);
                 await _context.SaveChangesAsync();
+                await _emailSender.SendEmailAsync(appointment.Client.Email, "Appointment Successfully Created",
+                    $"Your Appointment has been successfully created. We will be waiting for you on {appointment.AppointmentDate.Date:dd/MM} at {appointment.HourAndMinute}"
+);
                 return RedirectToAction(nameof(Index));
             }
             return View(appointment);
@@ -164,7 +171,6 @@ namespace Beauty_Salon.Controllers
             appointment.HourAndMinute = appointmentView.AppointmentTime.Hour + ":" + appointmentView.AppointmentTime.Minute;
             appointment.ProcedureId = appointmentView.ProcedureId;
 
-
             if (appointment.AppointmentTime.Minute == 0)
             {
                 appointment.HourAndMinute += "0";
@@ -180,6 +186,8 @@ namespace Beauty_Salon.Controllers
                 {
                     _context.Update(appointment);
                     await _context.SaveChangesAsync();
+                    await _emailSender.SendEmailAsync(appointment.Client.Email, "Appointment Successfully Changed",
+                    $"Your Appointment has been successfully changed. We will be waiting for you on {appointment.AppointmentDate.Date:dd/MM} at {appointment.HourAndMinute}");
                 }
                 catch (DbUpdateConcurrencyException)
                 {

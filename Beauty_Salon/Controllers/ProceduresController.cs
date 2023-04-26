@@ -77,7 +77,7 @@ namespace Beauty_Salon.Controllers
         [Authorize(Roles = "Worker,Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,WorkerId,WorkerName")] ProcedureViewModel procedureView)
+        public async Task<IActionResult> Create([Bind("Id,Name,Price,WorkerId")] ProcedureViewModel procedureView)
         {
 
             var workers = new List<ApplicationUser>();

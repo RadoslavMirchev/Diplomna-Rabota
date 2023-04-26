@@ -36,7 +36,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Price) лева
                 </td>
-                @if (!User.Identity.IsAuthenticated || !User.IsInRole("Admin"))
+                @if (!User.Identity.IsAuthenticated || !User.IsInRole("Admin") || !User.IsInRole("Worker"))
                 {
                     <td>
                         <a class="btn btn-custom" asp-action="Details" asp-route-id="@item.Id">Още информация</a>
