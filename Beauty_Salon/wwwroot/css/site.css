@@ -41,12 +41,6 @@ footer {
 div {
     color: plum;
 }
-.link {
-    color:plum
-}
-.link:hover {
-    color:rebeccapurple
-}
 .bg-plum {
     background-color:plum;
 } 
